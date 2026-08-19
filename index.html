@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive image processing laboratory for Sobel, Prewitt and Laplacian edge detection." />
+  <title>Image Processing Operators | Kernel Lab</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home">
+        <span class="brand-mark">K</span>
+        <span>Kernel Lab</span>
+      </a>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#operators">Operators</a>
+        <a href="#demo">Live Demo</a>
+        <a href="#about">About</a>
+      </nav>
+      <a class="github-btn" href="Copy_of_operators.ipynb" target="_blank" rel="noopener">Notebook ↗</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">IMAGE PROCESSING • EDGE DETECTION</div>
+          <h1>Image Processing<br /><span>Operators</span></h1>
+          <p class="hero-copy">
+            Explore how convolution kernels reveal edges and structure using
+            <strong>Sobel</strong>, <strong>Prewitt</strong>, and <strong>Laplacian</strong> operators.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#demo">Try the Demo</a>
+            <a class="secondary-btn" href="Copy_of_operators.ipynb" target="_blank" rel="noopener">View Notebook</a>
+          </div>
+          <div class="hero-meta">
+            <span>OpenCV</span><span>Python</span><span>NumPy</span><span>Matplotlib</span>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="mini-window">
+            <div class="window-bar"><i></i><i></i><i></i><span>kernel_preview.py</span></div>
+            <pre><code>sobel_x = [
+  [-1,  0,  1],
+  [-2,  0,  2],
+  [-1,  0,  1]
+]
+
+prewitt_x = [
+  [-1,  0,  1],
+  [-1,  0,  1],
+  [-1,  0,  1]
+]
+
+laplacian = [
+  [ 0,  1,  0],
+  [ 1, -4,  1],
+  [ 0,  1,  0]
+]</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="operators" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">THE CORE OPERATORS</div>
+            <h2>Three kernels. One goal.</h2>
+          </div>
+          <p>Each operator highlights image intensity changes in a different way.</p>
+        </div>
+
+        <div class="operator-grid">
+          <article class="operator-card">
+            <div class="operator-number">01</div>
+            <h3>Sobel</h3>
+            <p>Uses horizontal and vertical gradients to estimate edge strength and direction.</p>
+            <div class="kernel-label">Sobel X</div>
+            <div class="matrix">
+              <span>-1</span><span>0</span><span>1</span>
+              <span>-2</span><span>0</span><span>2</span>
+              <span>-1</span><span>0</span><span>1</span>
+            </div>
+            <div class="tags"><span>Gx</span><span>Gy</span><span>Magnitude</span></div>
+          </article>
+
+          <article class="operator-card featured">
+            <div class="operator-number">02</div>
+            <h3>Prewitt</h3>
+            <p>Measures horizontal and vertical intensity changes with a simple gradient kernel.</p>
+            <div class="kernel-label">Prewitt X</div>
+            <div class="matrix">
+              <span>-1</span><span>0</span><span>1</span>
+              <span>-1</span><span>0</span><span>1</span>
+              <span>-1</span><span>0</span><span>1</span>
+            </div>
+            <div class="tags"><span>Gx</span><span>Gy</span><span>Magnitude</span></div>
+          </article>
+
+          <article class="operator-card">
+            <div class="operator-number">03</div>
+            <h3>Laplacian</h3>
+            <p>A second-derivative operator that emphasizes rapid intensity changes around edges.</p>
+            <div class="kernel-label">Laplacian</div>
+            <div class="matrix">
+              <span>0</span><span>1</span><span>0</span>
+              <span>1</span><span>-4</span><span>1</span>
+              <span>0</span><span>1</span><span>0</span>
+            </div>
+            <div class="tags"><span>2nd derivative</span><span>Edges</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo" class="section demo-section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">INTERACTIVE LAB</div>
+            <h2>Upload an image. See the edges.</h2>
+          </div>
+          <p>This browser demo applies the same three operator ideas from the notebook.</p>
+        </div>
+
+        <div class="demo-panel">
+          <div class="upload-row">
+            <label class="upload-box">
+              <input id="imageInput" type="file" accept="image/*" />
+              <span class="upload-icon">↑</span>
+              <strong>Choose an image</strong>
+              <small>PNG, JPG, JPEG or WEBP</small>
+            </label>
+            <button id="sampleBtn" class="secondary-btn" type="button">Use Sample Image</button>
+          </div>
+
+          <div id="status" class="status">Waiting for an image.</div>
+
+          <div class="result-grid">
+            <div class="result-card">
+              <div class="result-head"><span>01</span><strong>Original</strong></div>
+              <canvas id="originalCanvas"></canvas>
+            </div>
+            <div class="result-card">
+              <div class="result-head"><span>02</span><strong>Grayscale</strong></div>
+              <canvas id="grayCanvas"></canvas>
+            </div>
+            <div class="result-card">
+              <div class="result-head"><span>03</span><strong>Sobel</strong></div>
+              <canvas id="sobelCanvas"></canvas>
+            </div>
+            <div class="result-card">
+              <div class="result-head"><span>04</span><strong>Prewitt</strong></div>
+              <canvas id="prewittCanvas"></canvas>
+            </div>
+            <div class="result-card">
+              <div class="result-head"><span>05</span><strong>Laplacian</strong></div>
+              <canvas id="laplacianCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section about-section">
+      <div class="container about-grid">
+        <div>
+          <div class="eyebrow">ABOUT THE PROJECT</div>
+          <h2>From pixels to patterns.</h2>
+          <p>
+            The accompanying Python notebook loads an image, converts it to grayscale,
+            defines Sobel, Prewitt and Laplacian kernels, applies the operators with
+            OpenCV, normalizes the results, and displays the detected edges.
+          </p>
+        </div>
+        <div class="process-list">
+          <div><span>01</span><strong>Upload</strong><p>Read an input image.</p></div>
+          <div><span>02</span><strong>Convert</strong><p>Create a grayscale representation.</p></div>
+          <div><span>03</span><strong>Convolve</strong><p>Apply the operator kernels.</p></div>
+          <div><span>04</span><strong>Compare</strong><p>Visualize the resulting edges.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <span>Kernel Lab • Image Processing Operators</span>
+      <span>Built with HTML, CSS & JavaScript</span>
+      <span>Vishal</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
